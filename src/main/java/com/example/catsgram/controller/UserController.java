@@ -5,6 +5,7 @@ import com.example.catsgram.exceptions.UserAlreadyExistException;
 import com.example.catsgram.model.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,7 +16,8 @@ public class UserController {
 
     @GetMapping
     public List<User> findAll() {
-        return (List<User>) users.values();
+        List<User> listOfUsers = new ArrayList<>(users.values());
+        return listOfUsers;
     }
 
     @PostMapping
