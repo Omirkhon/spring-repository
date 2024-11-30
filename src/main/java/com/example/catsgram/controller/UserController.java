@@ -6,6 +6,7 @@ import com.example.catsgram.model.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -13,16 +14,16 @@ public class UserController {
     private final HashMap<String, User> users = new HashMap<>();
 
     @GetMapping
-    public HashMap<String, User> findAll() {
-        return users;
+    public List<User> findAll() {
+        return (List<User>) users.values();
     }
 
     @PostMapping
     public User create(@RequestBody User user) throws Exception {
-        if (users.containsKey(user.getEmail()))
-            throw new UserAlreadyExistException();
         if (user.getEmail() == null)
             throw new InvalidEmailException();
+        if (users.containsKey(user.getEmail()))
+            throw new UserAlreadyExistException();
         users.put(user.getEmail(), user);
         return user;
     }
