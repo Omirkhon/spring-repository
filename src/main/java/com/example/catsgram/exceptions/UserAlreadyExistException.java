@@ -1,4 +1,4 @@
 package com.example.catsgram.exceptions;
 
-public class UserAlreadyExistException extends Exception {
+public class UserAlreadyExistException extends RuntimeException {
 }
