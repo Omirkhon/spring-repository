@@ -4,6 +4,7 @@ import com.example.catsgram.model.Post;
 import com.example.catsgram.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +17,12 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public List<Post> findAll() {
+    public List<Post> findAll(
+            @RequestParam(required = false) @DefaultValue("desc") String sort,
+            @RequestParam(required = false) @DefaultValue("10") Integer size,
+            @RequestParam(required = false) @DefaultValue("0") Integer page) {
         log.debug("GET /posts");
-        return postService.findAll();
+        return postService.findAll(sort, size, page);
     }
 
     @PostMapping

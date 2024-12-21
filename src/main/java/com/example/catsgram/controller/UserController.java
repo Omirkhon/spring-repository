@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -16,9 +17,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<User> findAll() {
-        log.debug("GET /users");
-        return userService.findAll();
+    public List<User> findAll(@RequestParam LocalDate birthdate) {
+        if (birthdate == null) {
+            return userService.findAll();
+        }
+        log.debug("GET /users?birthdate=2000-05-12");
+        return userService.findUserByBirthDate(birthdate);
     }
 
     @PostMapping

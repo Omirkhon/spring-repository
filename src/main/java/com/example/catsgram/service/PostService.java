@@ -2,6 +2,7 @@ package com.example.catsgram.service;
 
 import com.example.catsgram.exceptions.UserNotFoundException;
 import com.example.catsgram.model.Post;
+import com.example.catsgram.utils.DateComparator;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,29 @@ public class PostService {
         this.userService = userService;
     }
 
-    public List<Post> findAll() {
-        return posts;
+    public List<Post> findAll(String sort, Integer size, Integer page) {
+        if (posts.isEmpty()) {
+            return posts;
+        }
+
+        if (sort.equals("asc")) {
+            posts.sort(new DateComparator());
+        } else if (sort.equals("desc")) {
+            posts.sort(new DateComparator().reversed());
+        }
+
+        List<List<Post>> newPosts = new ArrayList<>();
+
+        for (int i = 0; i <= size; i++) {
+            List<Post> tempPosts = new ArrayList<>();
+
+            for (int j = posts.size()/size * i; j < posts.size()/size + posts.size()/size * i; j++) {
+                tempPosts.add(posts.get(j));
+            }
+            newPosts.add(tempPosts);
+        }
+
+        return newPosts.get(page);
     }
 
     public Post create(Post post) {
